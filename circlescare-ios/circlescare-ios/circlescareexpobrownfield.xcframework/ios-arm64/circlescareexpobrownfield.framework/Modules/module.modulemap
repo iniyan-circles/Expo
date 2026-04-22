@@ -1,0 +1,4 @@
+framework module circlescareexpobrownfield {
+  header "circlescareexpobrownfield-Swift.h"
+  requires objc
+}

@@ -6,16 +6,16 @@
 //
 
 import SwiftUI
+import circlescareexpobrownfield
 
 struct ContentView: View {
+    init() {
+        ReactNativeHostManager.shared.initialize()
+    }
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
-        }
-        .padding()
+        ReactNativeView(moduleName: "main")
+            .ignoresSafeArea()
     }
 }
 

@@ -6,13 +6,44 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXCopyFilesBuildPhase section */
+		98862DDF2F98BDD500F92106 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		98862DB92F98AB5600F92106 /* circlescare-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "circlescare-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+		98862DE02F98BDD500F92106 /* Exceptions for "circlescare-ios" folder in "Embed Frameworks" phase from "circlescare-ios" target */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			attributesByRelativePath = {
+				circlescareexpobrownfield.xcframework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
+				hermesvm.xcframework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
+			};
+			buildPhase = 98862DDF2F98BDD500F92106 /* Embed Frameworks */;
+			membershipExceptions = (
+				circlescareexpobrownfield.xcframework,
+				hermesvm.xcframework,
+			);
+		};
+/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		98862DBB2F98AB5600F92106 /* circlescare-ios */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				98862DE02F98BDD500F92106 /* Exceptions for "circlescare-ios" folder in "Embed Frameworks" phase from "circlescare-ios" target */,
+			);
 			path = "circlescare-ios";
 			sourceTree = "<group>";
 		};
@@ -55,6 +86,7 @@
 				98862DB52F98AB5600F92106 /* Sources */,
 				98862DB62F98AB5600F92106 /* Frameworks */,
 				98862DB72F98AB5600F92106 /* Resources */,
+				98862DDF2F98BDD500F92106 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
