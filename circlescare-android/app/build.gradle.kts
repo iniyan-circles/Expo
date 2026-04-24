@@ -53,7 +53,7 @@ android {
             initWith(getByName("release"))
             matchingFallbacks += listOf("release")
             applicationIdSuffix = ".qa"
-            isDebuggable = true
+            isDebuggable = false
             isMinifyEnabled = true
             isShrinkResources = true
             buildConfigField("Boolean", "USE_METRO", "false")
