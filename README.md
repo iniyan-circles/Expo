@@ -236,7 +236,11 @@ Publishes the AAR to **GitHub Packages**. This version is what the production CI
 cd circlescare-expo
 npm run publish:android:brownfield
 ```
-*Note: This script automatically runs prebuild, validates version sync with the host app, and pushes to GitHub.*
+#### 🛡️ Version Sync Safety Guard
+The `publish:android:brownfield` script includes a strict validation layer:
+1. **Sync Check**: It reads `circlescare-expo/app.json` and `circlescare-android/gradle/libs.versions.toml`. If the versions don't match exactly, the publish **fails**.
+2. **Immutability**: GitHub Packages is **immutable**. You cannot overwrite version `1.0.2` once it’s live. You must bump both files and re-publish.
+3. **Prebuild Clean**: It automatically runs `npx expo prebuild --clean` to ensure no stale native code enters the AAR.
 
 ---
 
