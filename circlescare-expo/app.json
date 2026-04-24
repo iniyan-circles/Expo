@@ -2,7 +2,7 @@
   "expo": {
     "name": "circlescare-expo",
     "slug": "circlescare-expo",
-    "version": "1.0.2",
+    "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "circlescareexpo",
@@ -52,7 +52,7 @@
               {
                 "type": "remotePrivate",
                 "name": "githubPackages",
-                "url": "https://maven.pkg.github.com/iniyanmurugavel/circles-roaming-brownfield",
+                "url": "https://maven.pkg.github.com/iniyan-circles/Expo",
                 "username": {
                   "variable": "GITHUB_ACTOR"
                 },

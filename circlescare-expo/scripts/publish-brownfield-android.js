@@ -128,7 +128,7 @@ const env = {
 
 console.log(`\n[brownfield-publish] Actor  : ${githubActor}`);
 console.log(`[brownfield-publish] Version: ${publishVersion}`);
-console.log('[brownfield-publish] Target : https://maven.pkg.github.com/iniyanmurugavel/circles-roaming-brownfield');
+console.log('[brownfield-publish] Target : https://maven.pkg.github.com/iniyan-circles/Expo');
 console.log('[brownfield-publish] Starting publish...\n');
 
 runStep(isWindows ? 'npm.cmd' : 'npm', ['install'], projectRoot, env);
@@ -146,5 +146,5 @@ runStep(
 );
 
 console.log(`\n[brownfield-publish] Done. Artifact ${publishVersion} is now available at:`);
-console.log('  https://github.com/iniyanmurugavel/circles-roaming-brownfield/packages');
+console.log('  https://github.com/iniyan-circles/Expo/packages');
 console.log('\n[brownfield-publish] Next: update circlescare-android to use this version and run a new Android build.\n');

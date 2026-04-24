@@ -44,7 +44,7 @@ dependencyResolutionManagement {
         if (!githubPackagesUser.isNullOrBlank() && !githubPackagesToken.isNullOrBlank()) {
             maven {
                 name = "GitHubPackages"
-                url = uri("https://maven.pkg.github.com/iniyanmurugavel/circles-roaming-brownfield")
+                url = uri("https://maven.pkg.github.com/iniyan-circles/Expo")
                 credentials(PasswordCredentials::class) {
                     username = githubPackagesUser
                     password = githubPackagesToken

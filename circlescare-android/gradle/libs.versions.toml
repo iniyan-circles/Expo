@@ -1,6 +1,6 @@
 [versions]
 agp = "8.9.1"
-brownfield = "1.0.2"
+brownfield = "1.0.0"
 kotlin = "2.2.20"
 coreKtx = "1.18.0"
 junit = "4.13.2"

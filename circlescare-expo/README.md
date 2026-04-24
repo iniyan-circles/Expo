@@ -32,7 +32,7 @@ The brownfield Android integration is configured in:
 `app.json` configures `expo-brownfield` to publish Android artifacts to GitHub Packages:
 
 ```text
-https://maven.pkg.github.com/iniyanmurugavel/circles-roaming-brownfield
+https://maven.pkg.github.com/iniyan-circles/Expo
 ```
 
 It also enables Expo Updates with:
@@ -124,7 +124,7 @@ GitHub Actions provides a built-in `GITHUB_TOKEN` that automatically has `write:
 
 To trigger a publish:
 
-1. Go to the **Actions** tab of `iniyanmurugavel/circles-roaming-brownfield`.
+1. Go to the **Actions** tab of `iniyan-circles/Expo`.
 2. Select **Publish Brownfield Android**.
 3. Click **Run workflow**.
 4. Leave **Dry run** as `false` to upload, or set it to `true` to run the build without uploading.
@@ -135,7 +135,7 @@ Use the dry run option to confirm the build succeeds before publishing a new ver
 
 The Maven endpoint is not a browser page. Use one of these instead:
 
-- `https://github.com/iniyanmurugavel/circles-roaming-brownfield/packages`
+- `https://github.com/iniyan-circles/Expo/packages`
 - `https://github.com/users/iniyanmurugavel/packages`
 
 ## Run the Expo feature in development

@@ -30,7 +30,7 @@ expoBrownfieldPublishPlugin {
   publications {
     githubPackages {
         type.set("remotePrivate")
-        url.set("https://maven.pkg.github.com/iniyanmurugavel/circles-roaming-brownfield")
+        url.set("https://maven.pkg.github.com/iniyan-circles/Expo")
         username.set(providers.environmentVariable("GITHUB_ACTOR").orElse(""))
         password.set(providers.environmentVariable("GITHUB_TOKEN").orElse(""))
         allowInsecure.set(false)

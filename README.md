@@ -329,7 +329,7 @@ The `publish:android:brownfield` script includes several critical safety layers:
 
 1. Bump version in all 3 files listed above.
 2. CI Server: **GitHub Actions → `Publish Brownfield Android` → Run Workflow**.
-4. Verify deployment at `https://github.com/iniyanmurugavel/circles-roaming-brownfield/packages`.
+4. Verify deployment at `https://github.com/iniyan-circles/Expo/packages`.
 5. CI Server: **Run `eas build --platform android --profile production`** to produce the resulting Android Host AAB for Google Play.
 6. **For iOS:** Run `eas build --platform ios --profile production`. Alternatively, locally extract XCFrameworks from CI and link them via Xcode:
 ```bash
@@ -439,7 +439,7 @@ To maintain a clean brownfield architecture, follow these testing standards.
 - **Expo Brownfield SDK**: [docs.expo.dev/sdk/brownfield](https://docs.expo.dev/versions/latest/sdk/brownfield/)
 - **Expo Updates (OTA)**: [docs.expo.dev/sdk/updates](https://docs.expo.dev/versions/latest/sdk/updates/)
 - **Runtime Versions Guide**: [docs.expo.dev/eas-update/runtime-versions](https://docs.expo.dev/eas-update/runtime-versions/)
-- **GitHub Packages Maven Registry**: [maven.pkg.github.com/iniyanmurugavel/circles-roaming-brownfield](https://maven.pkg.github.com/iniyanmurugavel/circles-roaming-brownfield)
+- **GitHub Packages Maven Registry**: [maven.pkg.github.com/iniyan-circles/Expo](https://maven.pkg.github.com/iniyan-circles/Expo)
 
 ---
 
