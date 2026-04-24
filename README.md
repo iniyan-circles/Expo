@@ -253,6 +253,28 @@ To generate shareable files for testing on real devices without using the termin
 
 ## 10. GitHub Actions CI/CD Map
 
+```mermaid
+flowchart TD
+    Start((Code Change))
+
+    Start --> Q1{What changed?}
+
+    Q1 -->|Only JS/UI/Styling| OTA[ota-update.yml<br/><i>Manual Trigger</i>]
+    Q1 -->|Pushing to main| Quality[lint-typecheck.yml<br/><i>Automated</i>]
+    Q1 -->|Native Modules / SDKs Changed| Tag[Push v* Tag<br/><i>Automated</i>]
+
+    OTA -->|Injects bundle directly to phones| EAS[(EAS Cloud)]
+
+    Tag --> AAR[publish-brownfield-android.yml]
+    AAR -->|Builds Library AAR| GHP[(GitHub Packages)]
+    
+    GHP --> Host[build-android-host.yml]
+    Host -->|Downloads AAR & Compiles Host App| Release[(GitHub Release:<br/>app-release.apk)]
+
+    Q1 -->|Need iOS Framework?| iOS[publish-brownfield-ios.yml<br/><i>Manual Trigger</i>]
+    iOS -->|Compiles xcframework.zip| iOSZip[(iOS Zip File)]
+```
+
 All workflow automation files live inside `.github/workflows/`. They are designed to automate Testing, Native Publishing, Android Host compiling, and Over-The-Air updates.
 
 ### Workflow Directory & Use Cases
