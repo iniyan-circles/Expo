@@ -1,6 +1,6 @@
 [versions]
 agp = "8.9.1"
-brownfield = "1.0.1"
+brownfield = "1.0.2"
 kotlin = "2.2.20"
 coreKtx = "1.18.0"
 junit = "4.13.2"
@@ -9,7 +9,7 @@ espressoCore = "3.7.0"
 lifecycleRuntimeKtx = "2.10.0"
 
 [libraries]
-brownfield = { module = "com.anithaaji.circlescareexpo:brownfield", version.ref = "brownfield" }
+brownfield = { module = "com.circles.circlescare:brownfield", version.ref = "brownfield" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }

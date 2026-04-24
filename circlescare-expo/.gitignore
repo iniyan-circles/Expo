@@ -40,4 +40,18 @@ app-example
 
 # generated native folders
 /ios
-/android
+# android/ is partially ignored: generated app/ and build dirs are ignored,
+# but android/brownfield/src/ and its build.gradle.kts are tracked manually.
+/android/app
+/android/build
+/android/.gradle
+/android/gradle
+/android/gradlew
+/android/gradlew.bat
+/android/local.properties
+/android/settings.gradle
+/android/settings.gradle.kts
+/android/brownfield/.gradle
+/android/brownfield/build
+/android/brownfield/libsDebug
+/android/brownfield/libsRelease

@@ -1,0 +1,39 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+  repositories {
+    google()
+    mavenCentral()
+  }
+  dependencies {
+    classpath('com.android.tools.build:gradle')
+    classpath('com.facebook.react:react-native-gradle-plugin')
+    classpath('org.jetbrains.kotlin:kotlin-gradle-plugin')
+    classpath('expo.modules:publish')
+  }
+}
+
+allprojects {
+  repositories {
+    google()
+    mavenCentral()
+    maven { url 'https://www.jitpack.io' }
+  }
+}
+
+apply plugin: "expo-root-project"
+apply plugin: "expo-brownfield-publish"
+apply plugin: "com.facebook.react.rootproject"
+
+expoBrownfieldPublishPlugin {
+  libraryName = "brownfield"
+  publications {
+    githubPackages {
+        type.set("remotePrivate")
+        url.set("https://maven.pkg.github.com/iniyanmurugavel/circles-roaming-brownfield")
+        username.set(providers.environmentVariable("GITHUB_ACTOR").orElse(""))
+        password.set(providers.environmentVariable("GITHUB_TOKEN").orElse(""))
+        allowInsecure.set(false)
+    }
+  }
+}
