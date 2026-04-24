@@ -62,6 +62,7 @@ android {
             buildConfigField("String", "METRO_HOST", "\"$metroHost\"")
             manifestPlaceholders["metroHost"] = metroHost
             manifestPlaceholders["appName"] = "Circles Debug"
+            manifestPlaceholders["expoRuntimeVersion"] = "debug"
         }
 
         // ── qa ────────────────────────────────────────────────────────────────
@@ -83,6 +84,7 @@ android {
                 "proguard-rules.pro",
             )
             manifestPlaceholders["appName"] = "Circles QA"
+            manifestPlaceholders["expoRuntimeVersion"] = "qa"
         }
 
         // ── release (production) ──────────────────────────────────────────────
@@ -101,6 +103,7 @@ android {
                 "proguard-rules.pro",
             )
             manifestPlaceholders["appName"] = "CirclesCare"
+            manifestPlaceholders["expoRuntimeVersion"] = "production"
         }
     }
 

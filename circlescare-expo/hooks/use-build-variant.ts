@@ -17,34 +17,30 @@ export interface BuildVariantInfo {
 
 export function useBuildVariant(): BuildVariantInfo {
   const channel = Updates.channel
+  const runtimeVersion = Updates.runtimeVersion
   const isDebug = __DEV__
-  const nativeAppId = Constants.expoConfig?.android?.package || ''
-  
-  // In our project, variants are distinguished by appId suffixes
-  const isQaVariant = nativeAppId.endsWith('.qa')
-  const isDebugVariant = nativeAppId.endsWith('.debug')
 
   let variant: BuildVariant
   let label: string
   let color: string
 
-  if (isDebug || isDebugVariant) {
+  if (isDebug || runtimeVersion === 'debug') {
     variant = 'debug'
-    label = 'Debug (Metro)'
+    label = 'Debug (Local)'
     color = '#22c55e'
-  } else if (channel === 'production') {
+  } else if (channel === 'production' || runtimeVersion === 'production') {
     variant = 'production'
-    label = 'Production'
+    label = channel ? 'Production (EAS)' : 'Local Release'
     color = '#3b82f6'
-  } else if (channel === 'preview' || isQaVariant) {
+  } else if (channel === 'preview' || runtimeVersion === 'qa') {
     variant = 'qa'
-    label = isQaVariant ? 'Local QA' : 'QA (EAS)'
+    label = runtimeVersion === 'qa' ? 'Local QA' : 'QA (EAS)'
     color = '#f59e0b'
   } else {
-    // Local assembleRelease — no EAS channel and no .qa/.debug suffix
-    variant = 'production'
-    label = 'Local Release'
-    color = '#3b82f6'
+    // Fallback for unexpected states
+    variant = 'local-qa'
+    label = 'Hybrid Build'
+    color = '#8b5cf6'
   }
 
   return {
