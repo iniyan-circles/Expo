@@ -280,7 +280,8 @@ Whenever you add a native module, change an Expo plugin, or upgrade the native S
 *Note: Which publish script you run depends entirely on which build variant you plan to test.*
 
 ### A. Local Publish (Mandatory for `QA` build)
-Publishes the AAR to your machine's `~/.m2/repository`. 
+**How it works:** This command bypasses the cloud entirely. It runs a local Gradle task that compiles the React Native bundle and Native code into a raw AAR package, then explicitly dumps it into your Mac's cached `~/.m2/repository` folder. This ensures your local Android Studio QA builds can consume the fresh AAR instantly while heavily isolated from network dependencies.
+
 - **Debug Build (`assembleDebug`)**: Does *not* require an AAR publish if using live Metro (`npm start`).
 - **QA Build (`assembleQa`)**: **Requires this**. The QA variant resolves the AAR purely from your local maven cache.
 
@@ -290,7 +291,8 @@ Publishes the AAR to your machine's `~/.m2/repository`.
 4. `./gradlew publishToMavenLocal`
 
 ### B. Remote Publish (Mandatory for `Release` build)
-Publishes the AAR to **GitHub Packages**. 
+**How it works:** This runs the `publishBrownfieldReleasePublicationToGithubPackagesRepository` script. Using your GitHub API token (`gpr.user`/`gpr.key` in `local.properties`), it natively authenticates and uploads the final release AAR securely to the GitHub Packages cloud registry. This guarantees CI servers and developers download the identical binary release everywhere.
+
 - **Release Build (`assembleRelease` / `bundleRelease`)**: **Requires this**. The Release variant resolves the AAR exclusively from the remote GitHub registry.
 
 ```bash
