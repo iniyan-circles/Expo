@@ -17,6 +17,9 @@ pluginManagement {
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
+        // qa variant: picks up locally published brownfield AAR via `./gradlew publishToMavenLocal`
+        mavenLocal()
+
         val githubPackagesUser =
             providers.gradleProperty("gpr.user")
                 .orElse(providers.environmentVariable("GITHUB_ACTOR"))
