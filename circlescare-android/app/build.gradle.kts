@@ -13,7 +13,8 @@ val metroHost: String = localProps.getProperty("metro.host", "localhost")
 
 android {
     namespace = "com.circles.circlescare_android"
-    compileSdk = 36
+    compileSdk = 35
+    ndkVersion = "27.1.12297006"
 
     signingConfigs {
         create("release") {
@@ -27,11 +28,24 @@ android {
     defaultConfig {
         applicationId = "com.circles.circlescare_android"
         minSdk = 26
-        targetSdk = 36
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders["appName"] = "CirclesCare"
+        vectorDrawables.useSupportLibrary = true
+    }
+
+    packaging {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
+        jniLibs {
+            pickFirsts += "lib/**/libhermes.so"
+            pickFirsts += "lib/**/libreactnativejni.so"
+            pickFirsts += "lib/**/libc++_shared.so"
+            pickFirsts += "lib/**/libfbjni.so"
+        }
     }
 
     buildTypes {
