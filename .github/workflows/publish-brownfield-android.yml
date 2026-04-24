@@ -1,0 +1,72 @@
+name: Publish Brownfield Android
+
+# Manually triggered. Run this whenever you need to publish a new native version.
+# The built-in GITHUB_TOKEN has write:packages for this repo — no separate PAT needed in CI.
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (build only, skip upload)'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  publish:
+    name: Build and publish brownfield AAR
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Set up Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: circlescare-expo/package-lock.json
+
+      # expo-brownfield requires NDK 27.1.12297006 for react-native 0.83.x
+      - name: Install Android NDK 27.1.12297006
+        run: |
+          echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "ndk;27.1.12297006"
+
+      - name: Cache Gradle dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('circlescare-expo/package.json', 'circlescare-expo/app.json') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Publish brownfield artifact
+        working-directory: circlescare-expo
+        env:
+          # The built-in GITHUB_TOKEN provides write:packages for this repo.
+          # No separate PAT or repository secret is needed for publishing here.
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            echo "[workflow] Dry run: running prebuild only, skipping upload."
+            npm install
+            npx expo prebuild -p android --clean --no-install
+          else
+            npm run publish:android:brownfield
+          fi

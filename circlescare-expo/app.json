@@ -44,7 +44,26 @@
           }
         }
       ],
-      "expo-brownfield",
+      [
+        "expo-brownfield",
+        {
+          "android": {
+            "publishing": [
+              {
+                "type": "remotePrivate",
+                "name": "githubPackages",
+                "url": "https://maven.pkg.github.com/iniyanmurugavel/circles-roaming-brownfield",
+                "username": {
+                  "variable": "GITHUB_ACTOR"
+                },
+                "password": {
+                  "variable": "GITHUB_TOKEN"
+                }
+              }
+            ]
+          }
+        }
+      ],
       "expo-font",
       "expo-image",
       "expo-web-browser"

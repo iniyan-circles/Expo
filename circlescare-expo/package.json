@@ -4,6 +4,8 @@
   "version": "1.0.0",
   "scripts": {
     "start": "expo start",
+    "postinstall": "node ./scripts/fix-expo-updates-ndk.js",
+    "publish:android:brownfield": "node ./scripts/publish-brownfield-android.js",
     "reset-project": "node ./scripts/reset-project.js",
     "android": "expo run:android",
     "ios": "expo run:ios",
