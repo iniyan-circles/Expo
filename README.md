@@ -73,7 +73,11 @@ npm run ios        # Boots standard Expo simulator app
 
 The core architecture bridging Native and Javascript relies on separating the **Native Engine** (which compiles slowly) from the **Javascript UI** (which can be streamed instantly). 
 
-### A. Debug Build (Hot Reloading via Metro)
+It is best visualized as **Two Layers**:
+1. **Native Layer**: Android library (AAR) + native dependencies (Expo Modules). This requires a new Native Publish whenever native code/SDKs change.
+2. **Update Layer**: JS bundle and assets. This can be delivered instantly via OTA updates if the `runtimeVersion` (set to `appVersion`) matches the native binary.
+
+### The Android Sync Mechanism & Dynamic Environments
 - **App Name:** `Circles Debug`
 - **Icon Background:** Light Blue (`#E0F2FE`)
 - **How it Works:** 
@@ -91,11 +95,21 @@ The core architecture bridging Native and Javascript relies on separating the **
   3. Metro is skipped entirely to mimic offline production behavior securely.
 
 ### C. Release Build (Production Fallback)
-- **App Name:** `CirclesCare`
-- **Icon Background:** Clean White (`#FFFFFF`)
-- **How it Works:**
-  1. This build targets production using empty caches. 
-  2. Because `mavenLocal()` is empty on CI Servers, Gradle strictly downloads the `brownfield.aar` securely from GitHub Packages.
+Named **"CirclesCare"**. Pulls `brownfield.aar` exclusively from GitHub Packages securely without relying on local builds. Uses a **Clean White** adaptive icon background.
+
+### Native Host Integration Example
+In a real-world host application, you mount the Expo screen from a native `Activity` by calling the generated brownfield helpers:
+
+```kotlin
+class ExpoFeatureActivity : BrownfieldActivity() {
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    // "main" corresponds to the index entry point in app.json
+    showReactNativeFragment("main")
+  }
+}
+```
+*The generated brownfield module creates a shared `ReactHost`, mounts the view, and handles native back-navigation automatically.*
 
 ---
 
@@ -187,6 +201,7 @@ All workflow automation files live inside `.github/workflows/`.
 1. **`lint-typecheck.yml`:** Automated PR quality gate running `tsc --noEmit` and `expo lint`. Blocks PR on errors.
 2. **`build-android-host.yml`:** Pushes to `main`. Assembles both `Release` and `QA` host APKs verifying successful implementation. Artifacts remain for 14 days.
 3. **`publish-brownfield-android.yml` (Manual):** Trigger when Native modules update. Runs NDK validation, prebuild, and pushes the new AAR generation to GitHub Packages.
+   - **Tip**: You can set **Dry run** to `true` when running this workflow to verify the build succeeds without actually uploading a new version.
 4. **`publish-brownfield-ios.yml` (Manual):** Runs `xcodebuild` dynamically returning a framework zip generation for manual iOS import.
 5. **`ota-update.yml` (Manual):** Pushes JS-ONLY logic directly via EAS cloud. Takes variables `branch` and `message`.
 
@@ -336,4 +351,13 @@ To maintain a clean brownfield architecture, follow these testing standards.
 *   **Don't commit `local.properties`**: This file contains your personal GitHub Token. It must stay local.
 *   **Don't forget to push OTA**: If your change is JS-only, don't force a Native AAR publish on the whole team. Use the **OTA Update** pipeline instead.
 *   **Don't mix Manifests**: Never put debug-only permissions (like `networkSecurityConfig`) into the `main` AndroidManifest. Keep them in `src/debug/`.
+
+---
+
+## 12. Useful References
+
+- **Expo Brownfield SDK**: [docs.expo.dev/sdk/brownfield](https://docs.expo.dev/versions/latest/sdk/brownfield/)
+- **Expo Updates (OTA)**: [docs.expo.dev/sdk/updates](https://docs.expo.dev/versions/latest/sdk/updates/)
+- **Runtime Versions Guide**: [docs.expo.dev/eas-update/runtime-versions](https://docs.expo.dev/eas-update/runtime-versions/)
+- **GitHub Packages Maven Registry**: [maven.pkg.github.com/iniyanmurugavel/circles-roaming-brownfield](https://maven.pkg.github.com/iniyanmurugavel/circles-roaming-brownfield)
 
