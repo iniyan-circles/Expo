@@ -236,11 +236,12 @@ Publishes the AAR to **GitHub Packages**. This version is what the production CI
 cd circlescare-expo
 npm run publish:android:brownfield
 ```
-#### 🛡️ Version Sync Safety Guard
-The `publish:android:brownfield` script includes a strict validation layer:
+#### 🛡️ Version Sync & NDK Safety Guards
+The `publish:android:brownfield` script includes several critical safety layers:
 1. **Sync Check**: It reads `circlescare-expo/app.json` and `circlescare-android/gradle/libs.versions.toml`. If the versions don't match exactly, the publish **fails**.
 2. **Immutability**: GitHub Packages is **immutable**. You cannot overwrite version `1.0.2` once it’s live. You must bump both files and re-publish.
-3. **Prebuild Clean**: It automatically runs `npx expo prebuild --clean` to ensure no stale native code enters the AAR.
+3. **NDK Reset (`--clean`)**: It forces `npx expo prebuild --clean`. This deletes the `android` folder entirely before regenerating it, ensuring no stale C++ artifacts or old NDK states survive the build.
+4. **`expo-updates` NDK Patch**: The project utilizes `scripts/fix-expo-updates-ndk.js` (hooked into `postinstall`). This forces the `expo-updates` module to respect the project's locked NDK version (`27.1.12297006`), preventing native initialization crashes.
 
 ---
 
