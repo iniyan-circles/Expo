@@ -1,7 +1,8 @@
 import * as Updates from 'expo-updates'
+import Constants from 'expo-constants'
 import { Platform } from 'react-native'
 
-export type BuildVariant = 'debug' | 'qa' | 'production' | 'local-qa'
+export type BuildVariant = 'debug' | 'qa' | 'production' | 'local-qa' | 'local-release'
 
 export interface BuildVariantInfo {
   variant: BuildVariant
@@ -17,12 +18,17 @@ export interface BuildVariantInfo {
 export function useBuildVariant(): BuildVariantInfo {
   const channel = Updates.channel
   const isDebug = __DEV__
+  const nativeAppId = Constants.expoConfig?.android?.package || ''
+  
+  // In our project, variants are distinguished by appId suffixes
+  const isQaVariant = nativeAppId.endsWith('.qa')
+  const isDebugVariant = nativeAppId.endsWith('.debug')
 
   let variant: BuildVariant
   let label: string
   let color: string
 
-  if (isDebug) {
+  if (isDebug || isDebugVariant) {
     variant = 'debug'
     label = 'Debug (Metro)'
     color = '#22c55e'
@@ -30,15 +36,15 @@ export function useBuildVariant(): BuildVariantInfo {
     variant = 'production'
     label = 'Production'
     color = '#3b82f6'
-  } else if (channel === 'preview') {
+  } else if (channel === 'preview' || isQaVariant) {
     variant = 'qa'
-    label = 'QA'
+    label = isQaVariant ? 'Local QA' : 'QA (EAS)'
     color = '#f59e0b'
   } else {
-    // Local assembleQa or assembleRelease — no EAS channel set
-    variant = 'local-qa'
-    label = 'Local Build'
-    color = '#8b5cf6'
+    // Local assembleRelease — no EAS channel and no .qa/.debug suffix
+    variant = 'production'
+    label = 'Local Release'
+    color = '#3b82f6'
   }
 
   return {
