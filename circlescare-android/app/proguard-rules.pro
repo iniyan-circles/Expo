@@ -17,7 +17,7 @@
 # ── Expo / Brownfield ─────────────────────────────────────────────────────────
 -keep class expo.modules.** { *; }
 -keep class host.exp.exponent.** { *; }
--keep class com.circles.circlescare.brownfield.** { *; }
+-keep class com.anithaaji.circlescareexpo.** { *; }
 
 # ── OkHttp & Okio (React Native networking) ───────────────────────────────────
 -dontwarn okhttp3.**
