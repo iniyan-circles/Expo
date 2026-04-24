@@ -22,7 +22,50 @@ cl-poc/
 
 ---
 
-## 2. Version Compatibility Matrix
+## 2. Android Brownfield Architecture Diagram
+
+This diagram illustrates how the **Expo Feature App** is bundled into a native library and consumed by the **Android Host App**.
+
+```mermaid
+graph TD
+    subgraph "Expo Project (circlescare-expo)"
+        JS[JavaScript / React UI]
+        Hermes[Hermes Engine]
+        ExpoModules[Expo Native Modules]
+        JS --> |Bundle| AAR_Build[brownfield.aar]
+        Hermes --> AAR_Build
+        ExpoModules --> AAR_Build
+    end
+
+    subgraph "Publishing Pipeline"
+        AAR_Build --> |Local| MavenLocal[~/.m2/repository]
+        AAR_Build --> |Remote| GPR[GitHub Packages]
+    end
+
+    subgraph "Host Android App (circlescare-android)"
+        MainActivity[MainActivity / BrownfieldActivity]
+        VariantSync[Runtime Variant Sync]
+        
+        MavenLocal -.-> |QA/Local| MainActivity
+        GPR -.-> |Release/Remote| MainActivity
+        
+        MainActivity --> |Mounts| RNView[React Native Fragment]
+        RNView --> |Initial Props| JS
+        VariantSync --> |expoRuntimeVersion| JS
+    end
+
+    subgraph "External Updates"
+        EAS[EAS Cloud] --> |OTA Update| JS
+    end
+
+    style AAR_Build fill:#f9f,stroke:#333,stroke-width:2px
+    style GPR fill:#34d2eb,stroke:#333,stroke-width:2px
+    style EAS fill:#f96,stroke:#333,stroke-width:2px
+```
+
+---
+
+## 3. Version Compatibility Matrix
 
 Ensure your local machine matches these versions before attempting Native builds.
 
