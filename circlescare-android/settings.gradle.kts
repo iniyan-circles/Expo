@@ -23,6 +23,10 @@ val localProps = Properties().apply {
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
+        // Aligns Native libraries with exactly what's in your local node_modules
+        maven { url = uri("$rootDir/../circlescare-expo/node_modules/react-native/android") }
+        maven { url = uri("$rootDir/../circlescare-expo/node_modules/expo-modules-core/android") }
+        
         // qa variant: picks up locally published brownfield AAR via `./gradlew publishToMavenLocal`
         mavenLocal()
 

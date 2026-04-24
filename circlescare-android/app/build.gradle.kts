@@ -41,10 +41,13 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
         jniLibs {
+            useLegacyPackaging = true
             pickFirsts += "lib/**/libhermes.so"
             pickFirsts += "lib/**/libreactnativejni.so"
             pickFirsts += "lib/**/libc++_shared.so"
             pickFirsts += "lib/**/libfbjni.so"
+            pickFirsts += "lib/**/libworklets.so"
+            pickFirsts += "lib/**/libreanimated.so"
         }
     }
 
