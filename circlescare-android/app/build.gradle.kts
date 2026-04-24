@@ -13,7 +13,7 @@ val metroHost: String = localProps.getProperty("metro.host", "localhost")
 
 android {
     namespace = "com.circles.circlescare_android"
-    compileSdk = 35
+    compileSdk = 36
     ndkVersion = "27.1.12297006"
 
     signingConfigs {
