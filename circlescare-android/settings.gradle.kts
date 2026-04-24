@@ -1,5 +1,6 @@
 import org.gradle.api.artifacts.repositories.PasswordCredentials
 import org.gradle.authentication.http.BasicAuthentication
+import java.util.Properties
 
 pluginManagement {
     repositories {
@@ -14,18 +15,25 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
+// local.properties is gitignored — safe place for credentials on dev machines
+val localProps = Properties().apply {
+    file("local.properties").takeIf { it.exists() }?.inputStream()?.use { load(it) }
+}
+
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         // qa variant: picks up locally published brownfield AAR via `./gradlew publishToMavenLocal`
         mavenLocal()
 
-        val githubPackagesUser =
-            providers.gradleProperty("gpr.user")
+        // Resolution order: local.properties → gradle.properties → env vars (GITHUB_ACTOR/GITHUB_TOKEN)
+        // CI: GITHUB_ACTOR + GITHUB_TOKEN are injected automatically by GitHub Actions — no secrets needed
+        val githubPackagesUser = localProps.getProperty("gpr.user")
+            ?: providers.gradleProperty("gpr.user")
                 .orElse(providers.environmentVariable("GITHUB_ACTOR"))
                 .orNull
-        val githubPackagesToken =
-            providers.gradleProperty("gpr.key")
+        val githubPackagesToken = localProps.getProperty("gpr.key")
+            ?: providers.gradleProperty("gpr.key")
                 .orElse(providers.environmentVariable("GITHUB_TOKEN"))
                 .orNull
 
