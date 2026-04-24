@@ -316,3 +316,24 @@ If it doesn't return `200`, generate a new classic Token.
 
 ### Error: 409 Conflict during Github Release Publish
 You attempted to overwrite an existing AAR version. GitHub Packages is immutable! You must bump BOTH `app.json` and `libs.versions.toml` synchronously and re-run.
+
+---
+
+## 11. Developer Testing Etiquette (Do's & Don'ts)
+
+To maintain a clean brownfield architecture, follow these testing standards.
+
+### ✅ DO (Best Practices)
+*   **Test UI purely in JS**: Use `npm start` and `USE_METRO=true` (Debug variant) for 99% of your UI/JS changes. It’s faster and maintains the bridge.
+*   **Verify on Physical Devices**: Always run `adb reverse tcp:8081 tcp:8081` when using a physical Android device to ensure it can see your local Metro server.
+*   **Test "Offline" in QA Variant**: Before submitting a PR that includes native changes, build the **QA variant** (`./gradlew assembleQa`). This ensures your pre-compiled bundle is correctly packed inside the AAR and works without Metro.
+*   **Use `logcat` for Native Crashes**: If the app crashes on launch, it's likely a Native JSI bridge error. Use the logs: `adb logcat *:S ReactNative:V ReactNativeJS:V`.
+*   **Keep Versioning in Sync**: If you bump the version in `app.json`, immediately update `libs.versions.toml` to match. 
+
+### ❌ DON'T (Common Pitfalls)
+*   **Don't Modify `circlescare-android` for UI**: Never try to fix a spacing or color issue by modifying the native Android XML files. Always fix it in `circlescare-expo`.
+*   **Don't ignore the Metro Console**: If the screen is white, the error is almost always in the Metro terminal. Check there before deep-diving into Android Studio.
+*   **Don't commit `local.properties`**: This file contains your personal GitHub Token. It must stay local.
+*   **Don't forget to push OTA**: If your change is JS-only, don't force a Native AAR publish on the whole team. Use the **OTA Update** pipeline instead.
+*   **Don't mix Manifests**: Never put debug-only permissions (like `networkSecurityConfig`) into the `main` AndroidManifest. Keep them in `src/debug/`.
+
