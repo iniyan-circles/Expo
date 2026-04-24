@@ -7,6 +7,8 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import com.facebook.react.ReactDelegate
+import com.facebook.react.ReactInstanceManager
+import com.facebook.react.ReactRootView
 
 object ReactNativeViewFactory {
   fun createFrameLayout(
@@ -16,9 +18,7 @@ object ReactNativeViewFactory {
       launchOptions: Bundle? = null,
   ): FrameLayout {
     val reactHost = ReactNativeHostManager.shared.getReactHost()
-      ?: error("ReactHost is null — call ReactNativeHostManager.initialize() before creating views")
-
-    val reactDelegate = ReactDelegate(activity, reactHost, rootComponent, launchOptions)
+    val reactDelegate = ReactDelegate(activity, reactHost!!, rootComponent, launchOptions)
 
     activity.lifecycle.addObserver(
         object : DefaultLifecycleObserver {
@@ -32,13 +32,13 @@ object ReactNativeViewFactory {
 
           override fun onDestroy(owner: LifecycleOwner) {
             reactDelegate.onHostDestroy()
-            owner.lifecycle.removeObserver(this)
+            owner.lifecycle.removeObserver(this) // Cleanup to avoid leaks
           }
         }
     )
 
     reactDelegate.loadApp()
-    return reactDelegate.reactRootView
-      ?: error("ReactRootView is null after loadApp() — ReactHost may have been destroyed")
+    return reactDelegate.reactRootView!!
+
   }
 }

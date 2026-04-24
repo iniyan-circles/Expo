@@ -59,6 +59,7 @@ class ReactNativeFragment : Fragment() {
     }
 
     internal fun findIn(activity: Activity): ReactNativeFragment? {
+      val activity = activity ?: return null
       return (activity as FragmentActivity).supportFragmentManager.findFragmentByTag(TAG)
           as ReactNativeFragment?
     }

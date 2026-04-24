@@ -7,7 +7,7 @@ plugins {
 
 group = "com.circles.circlescare"
 
-version = "1.0.2"
+version = "1.0.0"
 
 react { autolinkLibrariesWithApp() }
 
@@ -31,10 +31,11 @@ android {
         "REACT_NATIVE_RELEASE_LEVEL",
         "\"${findProperty("reactNativeReleaseLevel") ?: "stable"}\"",
     )
+    // TODO(pmleczek): Investigate why this has to be added for brownfield
     buildConfigField(
       "boolean",
       "IS_EDGE_TO_EDGE_ENABLED",
-      "true", // Android 16+ enforces edge-to-edge; hardcoded true for brownfield
+      "true", // Edge-to-edge is mandatory in Android 16+
     )
   }
 
@@ -50,9 +51,6 @@ android {
   }
   kotlinOptions { jvmTarget = "17" }
 }
-
-// libreact_codegen_rnscreens.so and libreact_codegen_safeareacontext.so are kept in the AAR
-// so that host apps without the RN Gradle plugin get all required native deps.
 
 val configureDevMenuInRelease = 
   findProperty("expo.devmenu.configureInRelease")?.toString() == "true"
