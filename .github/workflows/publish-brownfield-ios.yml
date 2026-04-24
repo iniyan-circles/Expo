@@ -1,0 +1,78 @@
+name: Publish Brownfield iOS
+
+# Manually triggered. Run whenever native code changes and a new XCFramework is needed.
+# Outputs: uploads circlescareexpobrownfield.xcframework + hermesvm.xcframework
+# as a GitHub Actions artifact. Download and copy into circlescare-ios manually.
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (prebuild + pod install only, skip xcodebuild)'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
+
+permissions:
+  contents: read
+
+jobs:
+  build-xcframework:
+    name: Build XCFramework
+    runs-on: macos-15  # Xcode 16 is pre-installed on macos-15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: circlescare-expo/package-lock.json
+
+      - name: Install dependencies
+        working-directory: circlescare-expo
+        run: npm install
+
+      - name: Expo prebuild (iOS)
+        working-directory: circlescare-expo
+        run: npx expo prebuild -p ios --clean --no-install
+
+      - name: Cache CocoaPods
+        uses: actions/cache@v4
+        with:
+          path: circlescare-expo/ios/Pods
+          key: ${{ runner.os }}-pods-${{ hashFiles('circlescare-expo/ios/Podfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pods-
+
+      - name: Install CocoaPods
+        working-directory: circlescare-expo/ios
+        run: pod install
+
+      - name: Build XCFramework
+        if: ${{ inputs.dry_run == 'false' }}
+        working-directory: circlescare-expo/ios
+        run: |
+          xcodebuild \
+            -workspace circlescare-expo.xcworkspace \
+            -scheme brownfield \
+            -configuration Release \
+            -destination "generic/platform=iOS" \
+            BUILD_LIBRARY_FOR_DISTRIBUTION=YES \
+            SKIP_INSTALL=NO \
+            clean build
+
+      - name: Upload XCFramework artifact
+        if: ${{ inputs.dry_run == 'false' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: brownfield-xcframework-${{ github.run_number }}
+          path: |
+            circlescare-expo/artifacts/circlescareexpobrownfield.xcframework
+            circlescare-expo/artifacts/hermesvm.xcframework
+          retention-days: 30
