@@ -32,3 +32,18 @@ This project utilizes a **Two-Layer Update Model**. The `circlescare-android` an
 4. **Do NOT Run Manual React Native Links:** Rely solely on `expo prebuild`. Do not use ancient React Native CLI linking code.
 
 By strictly adhering to this document, you prevent architecture desynchronization and ensure that Over-The-Air EAS updates deploy predictably!
+
+---
+
+## 🔮 Future Planning & Unsolved Explorations
+
+*(Note: These items are logged for future AI context and implementation, do not implement them automatically until requested)*
+
+- [ ] **UI & Styling:** How to develop the skeleton and simple UI.
+- [ ] **Navigation & Bridging:** How to write the bridge and navigation for two screens.
+- [ ] **Architecture:** Deepen the pure "Expo brownfield" approach correctly.
+- [ ] **Deep Linking:** How to navigate from the native Android/iOS app to accurately open a React Native flow via deeplink.
+- [ ] **OTA Behavior & Theming:** How OTA explicitly works with the Expo Repo Skeleton, including Testing Light and Dark mode dynamically.
+- [ ] **Dependency Organization:** Dependencies for Node Modules — strategies on exactly where to host them cleanly.
+- [ ] **Analytics & Tracking (Clevertap):** How to send events seamlessly to Clevertap from Native logic acting as a bridge to JS.
+- [ ] **Submodule Sync:** Syncing the Native app with sub-modules to dynamically update the dependencies using CI/CD.
