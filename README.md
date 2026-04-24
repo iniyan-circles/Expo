@@ -85,6 +85,18 @@ Ensure your local machine matches these versions before attempting Native builds
 
 ---
 
+## 3. Package & Namespace Reference
+
+| Layer | Type | Package Name / ID |
+|---|---|---|
+| **Expo Library** | Java Package | `com.circles.circlescare` |
+| **Expo Library** | Maven Artifact | `com.circles.circlescare:brownfield` |
+| **Android Host** | Application ID | `com.circles.circlescare_android` |
+| **Android Host** | Debug ID | `com.circles.circlescare_android.debug` |
+| **Android Host** | QA ID | `com.circles.circlescare_android.qa` |
+
+---
+
 ## 2. Quick-Start Local Development
 
 Use this day-to-day when writing Javascript/UI code.
