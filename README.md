@@ -267,11 +267,21 @@ If you intend to run full `.apk` / `.aab` production assemblies from GitHub Acti
 
 1. **`GITHUB_TOKEN`**: Read/Write access naturally built-in by GitHub Actions. (No manual setup needed).
 2. **`EXPO_TOKEN`**: Generated at `expo.dev` -> Access Tokens. Must be set manually as a GitHub Action Secret. Secures access for running `ota-update.yml` and `eas build`.
-3. **Android Keystore Passwords (For Native Host Actions):** If you run `build-android-host.yml` to produce a production build, your action environment relies on:
-   - `SIGNING_STORE_PASSWORD`
-   - `SIGNING_KEY_ALIAS`
-   - `SIGNING_KEY_PASSWORD`
-   *(These must be added as Repository Secrets so Gradle can seamlessly sign the native application without storing `circlescare-release.jks` passwords loosely).*
+3. **Android Keystore Secrets (For Native Host Actions):** If you run `build-android-host.yml` to produce a production build, your action environment expects four secrets. Because `.jks` files are ignored by git, you must upload the file as a Base64 string.
+   
+   **How to copy your keystore to Base64 (Run in terminal):**
+   ```bash
+   base64 -i circlescare-android/circlescare-release.jks | pbcopy
+   ```
+   *(This copies a giant string to your clipboard. Paste it into the `SIGNING_KEYSTORE_BASE64` secret).*
+
+   **Required Repository Secrets:**
+   - `SIGNING_KEYSTORE_BASE64`: The Base64 string copied from the command above.
+   - `SIGNING_STORE_PASSWORD`: Keystore password.
+   - `SIGNING_KEY_ALIAS`: Keystore alias name.
+   - `SIGNING_KEY_PASSWORD`: Keystore key password.
+   
+   *(Gradle uses these to seamlessly sign the native application without storing passwords or raw `.jks` files loosely in the repo).*
 4. **Apple Credentials / Standalone Keystores:** All other iOS Apple Developer configurations and Expo Standalone keystores are **automatically managed by EAS** during an `eas build` trigger and do not require manual GitHub Repository setups.
 
 ## 11. Native Publishing (AAR Deployment)
