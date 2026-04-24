@@ -297,6 +297,14 @@ gpr.key=ghp_YOUR_CLASSIC_GITHUB_TOKEN
 
 > **Warning**: Never commit `local.properties`!
 
+#### How to create a GitHub Classic PAT
+If you are hit with a `401 Unauthorized` or `403 Forbidden`, ensure you are using a **Classic** token with the following settings:
+1. Go to [github.com/settings/tokens](https://github.com/settings/tokens).
+2. Click **Generate new token → Generate new token (classic)**.
+3. Select scopes: **`read:packages`** and **`write:packages`**.
+4. Generate and immediately copy the token into `circlescare-android/local.properties` as `gpr.key`.
+*Note: Fine-grained tokens are NOT supported for GitHub Packages Maven registries.*
+
 ### Force Remote Dependency Sync (Cleanup)
 If you want to ensure that your host app pulls the latest AAR from **GitHub Packages** instead of your local cache (mavenLocal), run:
 ```bash
