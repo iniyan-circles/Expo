@@ -1,21 +1,29 @@
-# Add project specific ProGuard rules here.
-# You can control the set of applied configuration files using the
-# proguardFiles setting in build.gradle.
-#
-# For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
+# ── Stack traces ──────────────────────────────────────────────────────────────
+# Preserve line numbers so crash reports can map back to source
+-keepattributes SourceFile,LineNumberTable
+-renamesourcefileattribute SourceFile
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+# ── React Native ──────────────────────────────────────────────────────────────
+-keep class com.facebook.react.** { *; }
+-keep class com.facebook.hermes.** { *; }
+-keep class com.facebook.jni.** { *; }
 
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+# RN modules registered via @ReactMethod / @ReactProp use reflection
+-keepclassmembers class * {
+    @com.facebook.react.bridge.ReactMethod <methods>;
+    @com.facebook.react.uimanager.annotations.ReactProp <methods>;
+}
 
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
+# ── Expo / Brownfield ─────────────────────────────────────────────────────────
+-keep class expo.modules.** { *; }
+-keep class host.exp.exponent.** { *; }
+-keep class com.circles.circlescare.brownfield.** { *; }
+
+# ── OkHttp & Okio (React Native networking) ───────────────────────────────────
+-dontwarn okhttp3.**
+-dontwarn okio.**
+-keep class okhttp3.** { *; }
+
+# ── Kotlin ────────────────────────────────────────────────────────────────────
+-keep class kotlin.Metadata { *; }
+-dontwarn kotlin.**
