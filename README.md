@@ -253,14 +253,50 @@ To generate shareable files for testing on real devices without using the termin
 
 ## 10. GitHub Actions CI/CD Map
 
-All workflow automation files live inside `.github/workflows/`.
+All workflow automation files live inside `.github/workflows/`. They are designed to automate Testing, Native Publishing, Android Host compiling, and Over-The-Air updates.
 
-1. **`lint-typecheck.yml`:** Automated PR quality gate running `tsc --noEmit` and `expo lint`. Blocks PR on errors.
-2. **`build-android-host.yml`:** Pushes to `main`. Assembles both `Release` and `QA` host APKs verifying successful implementation. Artifacts remain for 14 days.
-3. **`publish-brownfield-android.yml` (Manual):** Trigger when Native modules update. Runs NDK validation, prebuild, and pushes the new AAR generation to GitHub Packages.
-   - **Tip**: You can set **Dry run** to `true` when running this workflow to verify the build succeeds without actually uploading a new version.
-4. **`publish-brownfield-ios.yml` (Manual):** Runs `xcodebuild` dynamically returning a framework zip generation for manual iOS import.
-5. **`ota-update.yml` (Manual):** Pushes JS-ONLY logic directly via EAS cloud. Takes variables `branch` and `message`.
+### Workflow Directory & Use Cases
+
+1. **`lint-typecheck.yml`**
+   - **Trigger**: Automatic on pushing to `main` or opening a PR.
+   - **When to rely on it**: Use this workflow purely as an automated quality gate. It runs `tsc --noEmit` and `expo lint`, explicitly blocking any code merges that contain strict TypeScript violations or formatting errors.
+2. **`ota-update.yml`**
+   - **Trigger**: Manual (`workflow_dispatch`).
+   - **When to rely on it**: Use this when you patch a UI bug or pure Javascript logic and want the fix live globally without waiting on the Google Play store. It exclusively uses Expo EAS to securely bypass native stores and inject Javascript live.
+3. **`publish-brownfield-ios.yml`**
+   - **Trigger**: Manual (`workflow_dispatch`).
+   - **When to rely on it**: Use this strictly when you update native SDKs or Expo native modules and need to generate a fresh `xcframework.zip` for importing physically into Xcode.
+
+### 🏷️ The Automated Git Tagging Strategy
+The two most critical workflows in the project explicitly listen for **Git Tags** (`v*`) to completely automate your deployment to production.
+
+When you are ready to formally freeze a version, **always cut a Git Tag**.
+
+#### 1. `publish-brownfield-android.yml` (Native Library Automation)
+   - **Trigger**: Automatically runs when you push a tag like `v1.0.0` (also supports manual trigger).
+   - **When to use**: When your React Native/Expo code is complete and stable, pushing a tag triggers this file to automatically parse the code, strip the native C++ Hermes engine via the NDK, and securely upload the resulting `1.0.0.aar` directly to **GitHub Packages**. 
+
+#### 2. `build-android-host.yml` (Host App Release Automation)
+   - **Trigger**: Automatically runs when you push a tag (and on `main` branch merges without the tag).
+   - **When to use**: Once the AAR is published via the library workflow above, this workflow dynamically downloads that AAR, compiles it natively using the `.jks` base64 secret, and securely generates a production physical `app-release.apk`.
+   - **The Tag Bonus**: If triggered by a `v*` tag, this workflow actively utilizes the `softprops/action-gh-release` pipeline to formally create a "GitHub Release" web page on your repository and attach the actual `.apk` so non-developers can download it!
+
+### 📝 Example: How to generate a Tag & Run the Pipeline
+Once you bump versions in `app.json`, `package.json`, and `libs.versions.toml`:
+
+```bash
+# 1. Commit your version bumps
+git commit -m "chore: release version 1.0.5"
+git push origin main
+
+# 2. Tag the commit locally and push the tag
+git tag v1.0.5
+git push origin v1.0.5
+```
+**How to Verify Everything Succeeded:**
+1. Check the GitHub **Actions** tab — both `Publish Brownfield Android` and `Build Android Host` will be spinning concurrently automatically.
+2. In your repo sidebar, click **Packages** to verify `v1.0.5` AAR deployed properly.
+3. In your repo sidebar, click **Releases** to physically download and test your `app-release.apk`.
 
 ### Cloud Keys & CI Secrets Required
 If you intend to run full `.apk` / `.aab` production assemblies from GitHub Actions natively or trigger OTA updates, you must provide the following:

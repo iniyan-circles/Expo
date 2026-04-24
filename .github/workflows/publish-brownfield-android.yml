@@ -3,6 +3,9 @@ name: Publish Brownfield Android
 # Manually triggered. Run this whenever you need to publish a new native version.
 # The built-in GITHUB_TOKEN has write:packages for this repo — no separate PAT needed in CI.
 on:
+  push:
+    tags:
+      - 'v*'
   workflow_dispatch:
     inputs:
       dry_run:
