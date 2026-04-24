@@ -30,6 +30,7 @@ This project utilizes a **Two-Layer Update Model**. The `circlescare-android` an
 2. **Do NOT Commit Credentials:** NEVER commit `local.properties`, `gradle.properties`, or `EXPO_TOKEN` tokens to Git. **Contact Iniyan Murugavel** to obtain these keys for local development or publishing.
 3. **Do NOT Override the Master Manifest Error-fully:** Never manually place `android:networkSecurityConfig` directly into `app/src/main/AndroidManifest.xml`. It MUST remain in `app/src/debug/`.
 4. **Do NOT Run Manual React Native Links:** Rely solely on `expo prebuild`. Do not use ancient React Native CLI linking code.
+5. **Do NOT Override Git Identity:** Never commit code under an AI name, email, or persona. You must never show up as a contributor in GitHub. Always execute Git commits using the actively configured human author's GitHub identity so they retain 100% contributor tracking.
 
 By strictly adhering to this document, you prevent architecture desynchronization and ensure that Over-The-Air EAS updates deploy predictably!
 
