@@ -376,3 +376,27 @@ To maintain a clean brownfield architecture, follow these testing standards.
 - **Runtime Versions Guide**: [docs.expo.dev/eas-update/runtime-versions](https://docs.expo.dev/eas-update/runtime-versions/)
 - **GitHub Packages Maven Registry**: [maven.pkg.github.com/iniyanmurugavel/circles-roaming-brownfield](https://maven.pkg.github.com/iniyanmurugavel/circles-roaming-brownfield)
 
+---
+
+## 13. Project Economics & Licensing
+
+### 🕊️ Is Expo Open Source?
+Yes. The **Expo SDK**, **Expo CLI**, and the underlying **React Native** framework are all open-source (MIT License). You can use them for free in perpetuity without paying for any cloud services.
+
+### 💰 EAS Cost & Usage Limits (Cloud Services)
+While the core tools are free, **Expo Application Services (EAS)** provides cloud-based convenience. As of 2026:
+
+| Service | Free Tier | Use Case |
+|---|---|---|
+| **EAS Build** | 15 Android + 15 iOS builds / month | Generating APKs/AABs in the cloud. |
+| **Local Build** | **Unlimited & Free** | Running `./gradlew` locally on your hardware. |
+| **EAS Update** | First 1,000 MAU free | Sending OTA JS patches to users. |
+| **EAS Submit** | Included in Free Tier | Automating App Store / Play Store uploads. |
+
+- **MAU (Monthly Active User)**: Defined as a unique app installation that downloads at least one update during the month. If you have 5,000 users but only send an update to 500 of them, your MAU count for that month is 500.
+- **Reference**: [Expo Pricing Page](https://expo.dev/pricing)
+
+### ⏱️ ETA & Update Delivery
+Updates sent via EAS Update are typically delivered to clients within **1–5 seconds** of the app being launched (over a standard 4G/5G connection).
+- **Reference**: [EAS Update Concepts](https://docs.expo.dev/eas-update/how-it-works/)
+
