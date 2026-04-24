@@ -316,9 +316,19 @@ The `publish:android:brownfield` script includes several critical safety layers:
 ### 🛠 Scaffold Release (A Native Change occurred)
 *Trigger when updating SDKs, adding Native Modules (Camera/Sensors), Updating core manifests.*
 
-1. Bump version locally in `circlescare-expo/app.json`.
-2. Sync version in `circlescare-android/gradle/libs.versions.toml`.
-3. CI Server: **GitHub Actions -> `Publish Brownfield Android` -> Run Workflow**.
+> [!IMPORTANT]
+> **Version Bump Checklist — All 3 files MUST be updated together:**
+>
+> | # | File | Field | Example |
+> |---|---|---|---|
+> | 1 | `circlescare-expo/app.json` | `expo.version` | `"1.0.3"` |
+> | 2 | `circlescare-expo/package.json` | `version` | `"1.0.3"` |
+> | 3 | `circlescare-android/gradle/libs.versions.toml` | `brownfield` | `"1.0.3"` |
+>
+> The publish script **will fail** if `app.json` and `libs.versions.toml` don't match. `package.json` is not checked automatically but must stay in sync for consistency.
+
+1. Bump version in all 3 files listed above.
+2. CI Server: **GitHub Actions → `Publish Brownfield Android` → Run Workflow**.
 4. Verify deployment at `https://github.com/iniyanmurugavel/circles-roaming-brownfield/packages`.
 5. CI Server: **Run `eas build --platform android --profile production`** to produce the resulting Android Host AAB for Google Play.
 6. **For iOS:** Run `eas build --platform ios --profile production`. Alternatively, locally extract XCFrameworks from CI and link them via Xcode:
