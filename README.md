@@ -298,6 +298,14 @@ When you are ready to formally freeze a version, **always cut a Git Tag**.
    - **Trigger**: Automatically runs when you push a tag like `v1.0.0` (also supports manual trigger).
    - **When to use**: When your React Native/Expo code is complete and stable, pushing a tag triggers this file to automatically parse the code, strip the native C++ Hermes engine via the NDK, and securely upload the resulting `1.0.0.aar` directly to **GitHub Packages**. 
 
+   **💡 What is a "Dry Run"?**
+   A Dry Run is a safety check. It performs all the heavy lifting of a real release (NDK setup, code compilation, and AAR generation) but **skips the final upload** to GitHub.
+   - **Why use it?** To verify that your code *can* successfully compile natively without "wasting" a version number or polluting the registry with a broken artifact.
+   - **How to trigger manually:**
+     1. Go to the **Actions** tab in GitHub.
+     2. Select **Publish Brownfield Android** on the left.
+     3. Click **Run workflow** -> Set **Dry run** to `true`.
+   - **What to verify:** If the Action turns Green, your native code is perfectly compatible and ready for a real tag-based release!
 #### 2. `build-android-host.yml` (Host App Release Automation)
    - **Trigger**: Automatically runs when you push a tag (and on `main` branch merges without the tag).
    - **When to use**: Once the AAR is published via the library workflow above, this workflow dynamically downloads that AAR, compiles it natively using the `.jks` base64 secret, and securely generates a production physical `app-release.apk`.
