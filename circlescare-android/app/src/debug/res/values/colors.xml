@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="icon_background_color">#E0F2FE</color> <!-- Light Blue for Debug -->
+    <color name="icon_background_color">#E0F2FE</color> <!-- Ice Blue -->
+    <color name="logo_tint_color">#0369A1</color> <!-- Darker Blue for Debug -->
 </resources>

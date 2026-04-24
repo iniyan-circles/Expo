@@ -5,4 +5,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="black">#FF000000</color>
     <color name="icon_background_color">#FFFFFF</color>
+    <color name="logo_tint_color">#1E3A8A</color> <!-- Navy Blue for Release/Default -->
 </resources>

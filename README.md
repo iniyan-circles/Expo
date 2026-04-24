@@ -32,6 +32,8 @@ Ensure your local machine matches these versions before attempting Native builds
 | Gradle | 8.11.1 |
 | Kotlin | 2.2.20 |
 | NDK | 27.1.12297006 |
+| Android compileSdk | 36 (required for AndroidX compatibility) |
+| Android targetSdk | 35 (Stable Android 15 runtime) |
 | Expo SDK | 55 |
 | React Native | 0.83.6 |
 | Node | 20+ |
@@ -79,7 +81,7 @@ It is best visualized as **Two Layers**:
 
 ### The Android Sync Mechanism & Dynamic Environments
 - **App Name:** `Circles Debug`
-- **Icon Background:** Light Blue (`#E0F2FE`)
+- **Branding:** Ice Blue Background with Dark Blue Logo.
 - **How it Works:** 
   1. Checks `USE_METRO=true` injected during the build.
   2. The custom Android host establishes a direct HTTP connection to `localhost:8081` via an ADB reverse proxy.
@@ -88,7 +90,7 @@ It is best visualized as **Two Layers**:
 
 ### B. QA Build (Static Pre-compiled Bundle)
 - **App Name:** `Circles QA`
-- **Icon Background:** Light Yellow (`#FEF08A`)
+- **Branding:** Yellow Background with Brown Logo.
 - **How it Works:**
   1. Checks `USE_METRO=false`.
   2. Extracts the fully compiled, minified `index.android.bundle` inside the AAR natively generated during publish. 
@@ -109,7 +111,7 @@ class ExpoFeatureActivity : BrownfieldActivity() {
   }
 }
 ```
-*The generated brownfield module creates a shared `ReactHost`, mounts the view, and handles native back-navigation automatically.*
+*The generated brownfield module creates a shared `ReactHost`, mounts the view, and handles native back-navigation automatically. We use **`expo-updates` runtimeVersion manifest placeholders** to sync the variant name from Gradle to JS.*
 
 ---
 
@@ -321,7 +323,7 @@ npm start -- --clear      # Hard flush metro bundle
 
 ### Error: NDK Mismatch (CXX1101 / CXX1104)
 1. Open Android Studio -> SDK Manager -> SDK Tools -> NDK (Side By Side).
-2. Install exactly `27.1.12297006`. Uninstall older/broken configurations.
+3. **Enable 16 KB Page Support**: This project uses `useLegacyPackaging = false` and NDK r27 to support modern Android 15 performance standards.
 
 ### Error: 401 Unauthorized during Publish or Sync
 Ensure your `local.properties` PAT is not expired.
