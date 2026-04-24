@@ -85,7 +85,7 @@ Ensure your local machine matches these versions before attempting Native builds
 
 ---
 
-## 3. Package & Namespace Reference
+## 4. Package & Namespace Reference
 
 | Layer | Type | Package Name / ID |
 |---|---|---|
@@ -97,11 +97,11 @@ Ensure your local machine matches these versions before attempting Native builds
 
 ---
 
-## 2. Quick-Start Local Development
+## 5. Quick-Start Local Development
 
 Use this day-to-day when writing Javascript/UI code.
 
-### 2a. Start the Metro Bundler
+### 5a. Start the Metro Bundler
 ```bash
 cd circlescare-expo
 npm install
@@ -109,14 +109,14 @@ npm start
 ```
 Metro provides local server hosting for the React Native JS on `http://localhost:8081`. 
 
-### 2b. Launch the Custom Android Host App (With Hot Reloading)
+### 5b. Launch the Custom Android Host App (With Hot Reloading)
 In a secondary terminal, install the **Debug APK**:
 ```bash
 cd circlescare-android
 ./gradlew installDebug
 ```
 
-### 2c. Launching Standalone React Native App (No Custom Host)
+### 5c. Launching Standalone React Native App (No Custom Host)
 If you want to test purely the UI/JS without compiling the custom `circlescare-android` codebase:
 ```bash
 cd circlescare-expo
@@ -126,7 +126,7 @@ npm run ios        # Boots standard Expo simulator app
 
 ---
 
-## 3. Android Brownfield Architecture (Debug vs QA vs Release)
+## 6. Android Brownfield Architecture (Debug vs QA vs Release)
 
 The core architecture bridging Native and Javascript relies on separating the **Native Engine** (which compiles slowly) from the **Javascript UI** (which can be streamed instantly). 
 
@@ -170,7 +170,7 @@ class ExpoFeatureActivity : BrownfieldActivity() {
 
 ---
 
-## 4. iOS Brownfield Architecture Deep-Dive
+## 7. iOS Brownfield Architecture Deep-Dive
 
 Unlike Android which utilizes a remote/local Maven resolving pipeline, iOS operates entirely on a strictly local static XCFramework pipeline. 
 
@@ -200,7 +200,7 @@ If the iOS team runs into the error: `module 'circlescareexpobrownfield' not fou
 
 ---
 
-## 5. The 30 Native Packages Explanation
+## 8. The 30 Native Packages Explanation
 
 `expo-brownfield` deliberately republishes transitive module dependencies (like `expo-camera`, `expo-router`, etc.) into GitHub Packages via `npm run publish:android:brownfield`. 
 
@@ -228,7 +228,7 @@ To generate shareable files for testing on real devices without using the termin
 
 ---
 
-## 6. The Build & Distribution Matrix
+## 9. The Build & Distribution Matrix
 
 ### Android Host Build Matrix
 
@@ -251,7 +251,7 @@ To generate shareable files for testing on real devices without using the termin
 
 ---
 
-## 7. GitHub Actions CI/CD Map
+## 10. GitHub Actions CI/CD Map
 
 All workflow automation files live inside `.github/workflows/`.
 
@@ -274,7 +274,7 @@ If you intend to run full `.apk` / `.aab` production assemblies from GitHub Acti
    *(These must be added as Repository Secrets so Gradle can seamlessly sign the native application without storing `circlescare-release.jks` passwords loosely).*
 4. **Apple Credentials / Standalone Keystores:** All other iOS Apple Developer configurations and Expo Standalone keystores are **automatically managed by EAS** during an `eas build` trigger and do not require manual GitHub Repository setups.
 
-## 7. Native Publishing (AAR Deployment)
+## 11. Native Publishing (AAR Deployment)
 
 Whenever you add a native module, change an Expo plugin, or upgrade the native SDK version, you must publish a new version of the Native AAR.
 
@@ -293,14 +293,14 @@ npm run publish:android:brownfield
 ```
 #### 🛡️ Version Sync & NDK Safety Guards
 The `publish:android:brownfield` script includes several critical safety layers:
-1. **Sync Check**: It reads `circlescare-expo/app.json` and `circlescare-android/gradle/libs.versions.toml`. If the versions don't match exactly, the publish **fails**.
+1. **Sync Check**: It reads `circlescare-expo/app.jsonThe Host Application` and `circlescare-android/gradle/libs.versions.toml`. If the versions don't match exactly, the publish **fails**.
 2. **Immutability**: GitHub Packages is **immutable**. You cannot overwrite version `1.0.2` once it’s live. You must bump both files and re-publish.
 3. **NDK Reset (`--clean`)**: It forces `npx expo prebuild --clean`. This deletes the `android` folder entirely before regenerating it, ensuring no stale C++ artifacts or old NDK states survive the build.
 4. **`expo-updates` NDK Patch**: The project utilizes `scripts/fix-expo-updates-ndk.js` (hooked into `postinstall`). This forces the `expo-updates` module to respect the project's locked NDK version (`27.1.12297006`), preventing native initialization crashes.
 
 ---
 
-## 8. Full Release & Update Checklists
+## 12. Full Release & Update Checklists
 
 ### When to use OTA vs Native Publish?
 
@@ -340,7 +340,7 @@ eas update --branch production --message "feat: updated onboarding visuals"
 
 ---
 
-## 9. Setup & Credentials Troubleshooting
+## 13. Setup & Credentials Troubleshooting
 
 ### Local Development Keys (`local.properties`)
 To pull or publish Android dependencies locally from GitHub Packages, your machine must authenticate. **If you don't have these credentials, contact Iniyan Murugavel.**
@@ -404,7 +404,7 @@ You attempted to overwrite an existing AAR version. GitHub Packages is immutable
 
 ---
 
-## 11. Developer Testing Etiquette (Do's & Don'ts)
+## 14. Developer Testing Etiquette (Do's & Don'ts)
 
 To maintain a clean brownfield architecture, follow these testing standards.
 
@@ -424,7 +424,7 @@ To maintain a clean brownfield architecture, follow these testing standards.
 
 ---
 
-## 12. Useful References
+## 15. Useful References
 
 - **Expo Brownfield SDK**: [docs.expo.dev/sdk/brownfield](https://docs.expo.dev/versions/latest/sdk/brownfield/)
 - **Expo Updates (OTA)**: [docs.expo.dev/sdk/updates](https://docs.expo.dev/versions/latest/sdk/updates/)
@@ -433,7 +433,7 @@ To maintain a clean brownfield architecture, follow these testing standards.
 
 ---
 
-## 13. Project Economics & Licensing
+## 16. Project Economics & Licensing
 
 ### 🕊️ Is Expo Open Source?
 Yes. The **Expo SDK**, **Expo CLI**, and the underlying **React Native** framework are all open-source (MIT License). You can use them for free in perpetuity without paying for any cloud services.
