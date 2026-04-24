@@ -8,7 +8,6 @@ const { spawnSync } = require('child_process');
 const projectRoot = path.resolve(__dirname, '..');
 const androidRoot = path.join(projectRoot, 'android');
 const androidLocalPropertiesPath = path.resolve(projectRoot, '..', 'circlescare-android', 'local.properties');
-const gradlePropertiesPath = path.join(os.homedir(), '.gradle', 'gradle.properties');
 const isWindows = process.platform === 'win32';
 
 function readGradleProperties(filePath) {
@@ -61,23 +60,20 @@ function runStep(command, args, cwd, env) {
 
 // --- Credentials ---
 // Resolution order:
-//   1. env vars            — CI (GITHUB_ACTOR/GITHUB_TOKEN injected by GitHub Actions)
-//   2. local.properties    — local dev (circlescare-android/local.properties, gitignored)
-//   3. ~/.gradle/gradle.properties — legacy fallback (gpr.user / gpr.key)
+//   1. env vars         — CI (GITHUB_ACTOR/GITHUB_TOKEN injected by GitHub Actions)
+//   2. local.properties — local dev (circlescare-android/local.properties, gitignored)
 
 const localProps = readGradleProperties(androidLocalPropertiesPath);
-const gradleProperties = readGradleProperties(gradlePropertiesPath);
 
-const githubActor = process.env.GITHUB_ACTOR || localProps['gpr.user'] || gradleProperties['gpr.user'];
-const githubToken = process.env.GITHUB_TOKEN || localProps['gpr.key'] || gradleProperties['gpr.key'];
+const githubActor = process.env.GITHUB_ACTOR || localProps['gpr.user'];
+const githubToken = process.env.GITHUB_TOKEN || localProps['gpr.key'];
 
 if (!githubActor || !githubToken) {
   fail(
     [
       'Missing GitHub Packages credentials. Checked (in order):',
-      `  1. GITHUB_ACTOR / GITHUB_TOKEN env vars`,
-      `  2. gpr.user / gpr.key in ${androidLocalPropertiesPath}`,
-      `  3. gpr.user / gpr.key in ${gradlePropertiesPath}`,
+      `  1. GITHUB_ACTOR / GITHUB_TOKEN env vars (CI)`,
+      `  2. gpr.user / gpr.key in ${androidLocalPropertiesPath} (local dev)`,
       'Use a personal access token (classic) with read:packages and write:packages.',
     ].join('\n         ')
   );
