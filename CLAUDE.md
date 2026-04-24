@@ -47,3 +47,15 @@ By strictly adhering to this document, you prevent architecture desynchronizatio
 - [ ] **Dependency Organization:** Dependencies for Node Modules — strategies on exactly where to host them cleanly.
 - [ ] **Analytics & Tracking (Clevertap):** How to send events seamlessly to Clevertap from Native logic acting as a bridge to JS.
 - [ ] **Submodule Sync:** Syncing the Native app with sub-modules to dynamically update the dependencies using CI/CD.
+
+### 📚 Reference Reading & Training Scope
+**Core Brownfield Reference Strategy:** 
+[Expo Brownfield: How to add Expo to your existing native app](https://expo.dev/blog/expo-brownfield-how-to-add-expo-to-your-existing-native-app-without-a-rewrite#where-expo-fits-in-existing-native-apps)
+
+**React Native Developer Course Curriculum:**
+- RN basics
+- Navigation
+- API calls
+- State management
+- Native bridge overview
+- Performance basics
