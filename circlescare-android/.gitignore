@@ -1,8 +1,8 @@
 *.iml
 .gradle
 /local.properties
-*.jks
 *.keystore
+*.jks
 .DS_Store
 /build
 /captures

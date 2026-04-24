@@ -31,6 +31,7 @@ android {
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        manifestPlaceholders["appName"] = "CirclesCare"
     }
 
     buildTypes {
@@ -43,6 +44,7 @@ android {
             buildConfigField("Boolean", "USE_METRO", "true")
             buildConfigField("String", "METRO_HOST", "\"$metroHost\"")
             manifestPlaceholders["metroHost"] = metroHost
+            manifestPlaceholders["appName"] = "Circles Debug"
         }
 
         // ── qa ────────────────────────────────────────────────────────────────
@@ -63,6 +65,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
             )
+            manifestPlaceholders["appName"] = "Circles QA"
         }
 
         // ── release (production) ──────────────────────────────────────────────
@@ -80,6 +83,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
             )
+            manifestPlaceholders["appName"] = "CirclesCare"
         }
     }
 
