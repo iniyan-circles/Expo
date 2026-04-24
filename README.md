@@ -266,7 +266,10 @@ All workflow automation files live inside `.github/workflows/`.
 If you intend to run full `.apk` / `.aab` production assemblies from GitHub Actions natively or trigger OTA updates, you must provide the following:
 
 1. **`GITHUB_TOKEN`**: Read/Write access naturally built-in by GitHub Actions. (No manual setup needed).
-2. **`EXPO_TOKEN`**: Generated at `expo.dev` -> Access Tokens. Must be set manually as a GitHub Action Secret. Secures access for running `ota-update.yml` and `eas build`.
+2. **`EXPO_TOKEN`**: This is your Expo access key. Generate it at [expo.dev > Settings > Access Tokens](https://expo.dev/settings/access-tokens).
+   - **Required Repository Secret**: `EXPO_TOKEN`
+   - **Used By**: `.github/workflows/ota-update.yml` and `eas build`.
+   - **How it works under the hood**: The OTA workflow uses this token to authenticate the `eas-cli` on the CI server. This allows GitHub Actions to securely compile and digitally sign your JavaScript bundle, then push the Over-The-Air update directly to Expo's cloud so users' phones receive the patch instantly (without requiring a Native AAR or APK rebuild).
 3. **Android Keystore Secrets (For Native Host Actions):** If you run `build-android-host.yml` to produce a production build, your action environment expects four secrets. Because `.jks` files are ignored by git, you must upload the file as a Base64 string.
    
    **How to copy your keystore to Base64 (Run in terminal):**
