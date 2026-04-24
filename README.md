@@ -276,17 +276,23 @@ If you intend to run full `.apk` / `.aab` production assemblies from GitHub Acti
 
 ## 11. Native Publishing (AAR Deployment)
 
-Whenever you add a native module, change an Expo plugin, or upgrade the native SDK version, you must publish a new version of the Native AAR.
+Whenever you add a native module, change an Expo plugin, or upgrade the native SDK version, you must publish a new version of the Native AAR. 
+*Note: Which publish script you run depends entirely on which build variant you plan to test.*
 
-### A. Local Publish (For Local Development & QA)
-Publishes the AAR to your machine's `~/.m2/repository`. Useful for testing changes instantly in the host app without a CI cycle.
+### A. Local Publish (Mandatory for `QA` build)
+Publishes the AAR to your machine's `~/.m2/repository`. 
+- **Debug Build (`assembleDebug`)**: Does *not* require an AAR publish if using live Metro (`npm start`).
+- **QA Build (`assembleQa`)**: **Requires this**. The QA variant resolves the AAR purely from your local maven cache.
+
 1. `cd circlescare-expo`
 2. `npx expo prebuild -p android --clean`
 3. `cd android`
 4. `./gradlew publishToMavenLocal`
 
-### B. Remote Publish (For Release & CI)
-Publishes the AAR to **GitHub Packages**. This version is what the production CI environment uses.
+### B. Remote Publish (Mandatory for `Release` build)
+Publishes the AAR to **GitHub Packages**. 
+- **Release Build (`assembleRelease` / `bundleRelease`)**: **Requires this**. The Release variant resolves the AAR exclusively from the remote GitHub registry.
+
 ```bash
 cd circlescare-expo
 npm run publish:android:brownfield
